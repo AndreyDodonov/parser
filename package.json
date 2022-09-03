@@ -1,0 +1,14 @@
+{
+  "name": "node_parser",
+  "version": "0.0.1",
+  "description": "parser on node js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Andrew Dodonov",
+  "license": "ISC",
+  "dependencies": {
+    "puppeteer": "^17.1.0"
+  }
+}
