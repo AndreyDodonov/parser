@@ -6,7 +6,21 @@ const https = require('https');
 const searchString = 'лошадь';
 
 
+
 (async () => {
+  // проверяем папку images
+  fs.stat('images', (err) => {
+    if (!err) {
+      console.log('directory exists');
+    } else if (err.code === 'ENOENT') {
+      console.log('no such directory');
+      fs.mkdir('images', () => {
+        console.log('directory was created');
+      });
+
+    }
+  })
+
   const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
   await page.goto(`https://yandex.ru/images/search?text=${searchString}`);
@@ -15,7 +29,7 @@ const searchString = 'лошадь';
   await page.click('.serp-item__link');
   await page.setViewport({
     width: 1200,
-    height: 1200
+    height: 200
   });
 
   await page.waitForSelector('.MMImage-Origin');
@@ -43,14 +57,14 @@ const searchString = 'лошадь';
 
 
   // загружаем картинки по ссылкам из json файла а папку
-  images.forEach((el, idx)=>{
-    const file = fs.createWriteStream(`images/${idx}_${el.alt}.webp`);
+  images.forEach((el, idx) => {
+    const file = fs.createWriteStream(`images/${idx}_${searchString}.webp`);
     const req = https.get(el.src, res => {
-      console.log(`${idx}.webp .... is done!`);
-      res.pipe(file);      
+      console.log(`${idx}__${searchString}.webp .... is done!`);
+      res.pipe(file);
     })
   })
 
   await browser.close;
 
-})()
+})();
